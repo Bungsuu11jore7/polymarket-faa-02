@@ -1,0 +1,13 @@
+Polymarket FAA Attribution Forecaster
+
+A stdlib-only, offline, deterministic Python forecaster for Polymarket's
+FAA outage attribution prices: for every market and every minute of the 4
+hours after each checkpoint, five quantiles of that minute's Yes price.
+
+Method: per-market empirical volatility (RMS of 1-minute price changes over
+the last 120 minutes, floored and capped), persistence median at the
+checkpoint price, spread growing as h**0.35, outer quantiles widened x1.3
+for jump-aware tails. No drift, no mean reversion — both hurt the backtest.
+
+Practice backtest (6 cases p00-p05, mean pinball loss x100):
+house baseline 0.363589, this forecaster 0.269237 (-26%), better on every case.
